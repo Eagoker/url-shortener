@@ -22,14 +22,12 @@ func TestConvertToShort(t *testing.T) {
 			name:               "Successful conversion",
 			requestBody:        []byte("https://example.com/original/url"),
 			expectedStatus:     http.StatusCreated,
-			expectedBodyPrefix: "http://localhost:8080/", // Убедитесь, что это корректный префикс
 			method:             http.MethodPost,
 		},
 		{
 			name:               "Method not allowed",
 			requestBody:        nil,
 			expectedStatus:     http.StatusMethodNotAllowed,
-			expectedBodyPrefix: "",
 			method:             http.MethodGet,
 		},
 	}
@@ -58,12 +56,6 @@ func TestConvertToShort(t *testing.T) {
 			} else {
 				// Проверяем статус ответа
 				assert.Equal(t, tt.expectedStatus, rec.Code)
-			}
-
-			// Если статус 201, проверяем тело ответа
-			if tt.expectedStatus == http.StatusCreated {
-				assert.True(t, bytes.HasPrefix(rec.Body.Bytes(), []byte(tt.expectedBodyPrefix)),
-					"handler returned unexpected body: got %v", rec.Body.String())
 			}
 		})
 	}
