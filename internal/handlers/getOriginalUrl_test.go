@@ -4,56 +4,57 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/labstack/echo/v4"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetOriginalUrl(t *testing.T) {
-	// Создаем тестовый HTTP GET-запрос
-	req, err := http.NewRequest(http.MethodGet, "/short-url-id", nil)
-	if err != nil {
-		t.Fatalf("Could not create request: %v", err)
-	}
+	// Инициализируем Echo
+	e := echo.New()
 
-	// Создаем ResponseRecorder для записи ответа
-	rr := httptest.NewRecorder()
+	// Создаем тестовый HTTP GET-запрос
+	req := httptest.NewRequest(http.MethodGet, "/short-url-id", nil)
+	rec := httptest.NewRecorder()
+
+	// Создаем контекст с запросом и ответом
+	c := e.NewContext(req, rec)
 
 	// Вызываем тестируемый хендлер
-	handler := http.HandlerFunc(GetOriginalUrl)
-	handler.ServeHTTP(rr, req)
+	if assert.NoError(t, GetOriginalUrl(c)) {
+		// Проверяем код ответа
+		assert.Equal(t, http.StatusMovedPermanently, rec.Code)
 
-	// Проверяем код ответа
-	if status := rr.Code; status != http.StatusTemporaryRedirect {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusTemporaryRedirect)
-	}
-
-	// Проверяем заголовок Location
-	expectedLocation := "https://practicum.yandex.ru/"
-	if location := rr.Header().Get("Location"); location != expectedLocation {
-		t.Errorf("handler returned wrong Location header: got %v want %v", location, expectedLocation)
+		// Проверяем заголовок Location
+		expectedLocation := "https://practicum.yandex.ru/"
+		assert.Equal(t, expectedLocation, rec.Header().Get("Location"))
 	}
 }
 
 func TestGetOriginalUrl_InvalidMethod(t *testing.T) {
-	// Создаем тестовый HTTP POST-запрос (недопустимый метод)
-	req, err := http.NewRequest(http.MethodPost, "/short-url-id", nil)
-	if err != nil {
-		t.Fatalf("Could not create request: %v", err)
-	}
+	// Инициализируем Echo
+	e := echo.New()
 
-	// Создаем ResponseRecorder для записи ответа
-	rr := httptest.NewRecorder()
+	// Создаем тестовый HTTP POST-запрос (недопустимый метод)
+	req := httptest.NewRequest(http.MethodPost, "/short-url-id", nil)
+	rec := httptest.NewRecorder()
+
+	// Создаем контекст с запросом и ответом
+	c := e.NewContext(req, rec)
 
 	// Вызываем тестируемый хендлер
-	handler := http.HandlerFunc(GetOriginalUrl)
-	handler.ServeHTTP(rr, req)
+	err := GetOriginalUrl(c)
 
-	// Проверяем код ответа для неверного метода
-	if status := rr.Code; status != http.StatusMethodNotAllowed {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusMethodNotAllowed)
-	}
+	// Проверяем, что вернулась ошибка
+	if assert.Error(t, err) {
+		he, ok := err.(*echo.HTTPError)
+		if ok {
+			// Проверяем код ответа для неверного метода
+			assert.Equal(t, http.StatusMethodNotAllowed, he.Code)
 
-	// Проверяем сообщение об ошибке
-	expected := "Method not allowed!\n"
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+			// Проверяем сообщение об ошибке
+			expected := "Method not allowed!"
+			assert.Equal(t, expected, he.Message)
+		}
 	}
 }

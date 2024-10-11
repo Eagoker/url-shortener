@@ -5,29 +5,32 @@ import (
 	"net/http"
 
 	"github.com/Eagoker/url-shortener/pkg"
+
+	"github.com/labstack/echo/v4"
+
 )
 
-func ConvertToShort(w http.ResponseWriter, r *http.Request){
-	if r.Method != http.MethodPost{
-		http.Error(w, "Method not allowed!", http.StatusMethodNotAllowed)
-		return
+
+func ConvertToShort(c echo.Context) error {
+	if c.Request().Method != http.MethodPost {
+		return echo.NewHTTPError(http.StatusMethodNotAllowed, "Method not allowed!")
 	}
 
-	originalUrlBytes, err := io.ReadAll(r.Body)
+	originalURLBytes, err := io.ReadAll(c.Request().Body)
 	if err != nil{
-		http.Error(w, "Error with reading body!", http.StatusBadRequest)	
+		return echo.NewHTTPError(http.StatusInternalServerError, "Reading body error!")
 	}
+	
+	originalURL := string(originalURLBytes)
 
-	originalUrl := string(originalUrlBytes)
-
-	shortUrl, err := pkg.GenerateShortURL(originalUrl)
+	shortURL, err := pkg.GenerateShortURL(originalURL)
 	if err != nil{
-		http.Error(w, "Error with generating shortURL!", http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error with genrate short URL")
 	}
 
-	byteShortUrl := []byte(shortUrl)
+	byteShortURL := []byte(shortURL)
 
-	w.Header().Set("content-type", "text/plain")
-	w.WriteHeader(http.StatusCreated)
-	w.Write(byteShortUrl)
+	c.Response().Header().Set("content-type", "text/plain")
+	return c.String(http.StatusCreated, string(byteShortURL))
+
 }
