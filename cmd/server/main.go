@@ -8,6 +8,7 @@ import (
 	"github.com/Eagoker/url-shortener/internal/config"
 	"github.com/Eagoker/url-shortener/internal/logger"
 
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
@@ -28,6 +29,7 @@ func main() {
 
 	// Подключение middleware для логгирования запросов
 	e.Use(logger.RequestLoggerMiddleware(zapLogger))
+	e.Use(middleware.Gzip())
 
 	// Маршруты
 	e.POST("/", handlers.ConvertToShort)
