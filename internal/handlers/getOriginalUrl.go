@@ -27,5 +27,5 @@ func GetOriginalUrl(c echo.Context) error{
 	// w.Header().Set("Location", originalUrl)
 	// w.WriteHeader(http.StatusTemporaryRedirect)
 
-	return c.Redirect(http.StatusMovedPermanently, originalUrl)
+	return c.Redirect(http.StatusTemporaryRedirect, originalUrl)
 }
