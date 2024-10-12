@@ -18,8 +18,9 @@ func main() {
 	e.POST("/", handlers.ConvertToShort)
 	e.GET("/:id", handlers.GetOriginalUrl)
 
+	log.Printf("Starting server on address: %s", config.ServerAddress)
+
 	if err := e.Start(config.ServerAddress); err != http.ErrServerClosed {
 		log.Fatal(err)
-	}
-	
+	}	
 }

@@ -3,10 +3,12 @@ package config
 import (
 	"flag"
 	"sync"
+
+	"github.com/caarlos0/env"
 )
 
 type Config struct {
-	ServerAddress string
+	ServerAddress string `env:"SERVER_ADDRESS"`
 }
 
 var (
@@ -14,16 +16,23 @@ var (
 	once sync.Once
 )
 
-func GetConfig() *Config{
+func GetConfig() *Config {
 	once.Do(func() {
-		serverAddress := flag.String("address", "localhost:8080", "Web-server address")
+		// Создаем новый экземпляр структуры Config
+		config = &Config{}
+
+		// Парсим флаги
+		serverAddress := flag.String("address", ":8080", "Web-server address")
 		flag.Parse()
 
-		config = &Config{
-			ServerAddress: *serverAddress,
+		// Разбираем переменные окружения
+		err := env.Parse(config) 
+		if err != nil || config.ServerAddress == "" {
+			// Если переменные окружения не заданы или ошибка парсинга, используем флаги
+			config.ServerAddress = *serverAddress
 		}
-
 	})
 
 	return config
 }
+
