@@ -1,0 +1,6 @@
+{"level":"info","timestamp":"2024-10-12T16:57:32.946-0400","msg":"Starting server","address":":8080"}
+{"level":"info","timestamp":"2024-10-12T16:57:37.120-0400","msg":"HTTP request and response","method":"POST","uri":"/shorten","status":200,"latency":0.000002328,"response_size":0}
+{"level":"info","timestamp":"2024-10-12T16:58:12.487-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten","status":200,"latency":0.000002705,"response_size":0}
+{"level":"info","timestamp":"2024-10-12T16:58:30.285-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten/","status":201,"latency":0.000167082,"response_size":46}
+{"level":"info","timestamp":"2024-10-12T16:58:58.511-0400","msg":"Starting server","address":":8080"}
+{"level":"info","timestamp":"2024-10-12T16:59:01.001-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten/","status":201,"latency":0.000101901,"response_size":44}

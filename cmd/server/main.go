@@ -32,6 +32,7 @@ func main() {
 	// Маршруты
 	e.POST("/", handlers.ConvertToShort)
 	e.GET("/:id", handlers.GetOriginalUrl)
+	e.POST("/api/shorten/", handlers.ApiShorten)
 
 	// Запуск сервера
 	zapLogger.Info("Starting server", zap.String("address", config.ServerAddress))
