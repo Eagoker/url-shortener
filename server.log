@@ -1,6 +1,14 @@
-{"level":"info","timestamp":"2024-10-12T16:57:32.946-0400","msg":"Starting server","address":":8080"}
-{"level":"info","timestamp":"2024-10-12T16:57:37.120-0400","msg":"HTTP request and response","method":"POST","uri":"/shorten","status":200,"latency":0.000002328,"response_size":0}
-{"level":"info","timestamp":"2024-10-12T16:58:12.487-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten","status":200,"latency":0.000002705,"response_size":0}
-{"level":"info","timestamp":"2024-10-12T16:58:30.285-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten/","status":201,"latency":0.000167082,"response_size":46}
-{"level":"info","timestamp":"2024-10-12T16:58:58.511-0400","msg":"Starting server","address":":8080"}
-{"level":"info","timestamp":"2024-10-12T16:59:01.001-0400","msg":"HTTP request and response","method":"POST","uri":"/api/shorten/","status":201,"latency":0.000101901,"response_size":44}
+{"level":"info","timestamp":"2024-10-13T15:20:24.803-0400","msg":"Starting server","address":"http://localhost:8080/"}
+{"level":"fatal","timestamp":"2024-10-13T15:20:24.803-0400","msg":"Server failed to start","error":"listen tcp: address http://localhost:8080/: too many colons in address"}
+{"level":"info","timestamp":"2024-10-13T15:21:00.889-0400","msg":"Starting server","address":"http://localhost:8080/"}
+{"level":"fatal","timestamp":"2024-10-13T15:21:00.889-0400","msg":"Server failed to start","error":"listen tcp: address http://localhost:8080/: too many colons in address"}
+{"level":"info","timestamp":"2024-10-13T15:21:34.387-0400","msg":"Starting server","address":"http://localhost:8080/"}
+{"level":"fatal","timestamp":"2024-10-13T15:21:34.387-0400","msg":"Server failed to start","error":"listen tcp: address http://localhost:8080/: too many colons in address"}
+{"level":"info","timestamp":"2024-10-13T15:27:09.636-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T15:28:30.553-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.010004826,"response_size":36}
+{"level":"info","timestamp":"2024-10-13T15:37:24.335-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T15:37:27.791-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.011242961,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T15:38:20.432-0400","msg":"HTTP request and response","method":"GET","uri":"/","status":200,"latency":0.00027966,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T15:38:42.282-0400","msg":"HTTP request and response","method":"GET","uri":"/KI7Xkv3w","status":200,"latency":0.001860153,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T15:38:50.214-0400","msg":"HTTP request and response","method":"GET","uri":"/KI7Xkv3w","status":200,"latency":0.001500677,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T15:39:06.158-0400","msg":"HTTP request and response","method":"GET","uri":"/Kl7Xkv3w","status":307,"latency":0.00173463,"response_size":0}

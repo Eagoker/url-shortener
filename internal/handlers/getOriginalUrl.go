@@ -4,28 +4,27 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Eagoker/url-shortener/internal/database"
 	"github.com/labstack/echo/v4"
-
 )
 
-func GetOriginalUrl(c echo.Context) error{
-	if c.Request().Method != http.MethodGet{
+func GetOriginalUrl(c echo.Context) error {
+	db := database.GetDB()
+
+	if c.Request().Method != http.MethodGet {
 		return echo.NewHTTPError(http.StatusMethodNotAllowed, "Method not allowed!")
 	}
-	
-	path := c.Request().URL.Path
 
-	// Убираем первый слеш и берем первую часть до следующего слеша
-	trimmedPath := strings.TrimPrefix(path, "/")
-	id := strings.Split(trimmedPath, "/")[0]
+	// Извлекаем короткий URL из пути
+	shortURL := strings.TrimPrefix(c.Request().URL.Path, "/")
 
-	//тут будет логика получения ориг юрла
-	_ = id
+	// Запрос в базу данных для поиска оригинального URL
+	var originalURL string
+	err := db.QueryRow(c.Request().Context(), "SELECT original_url FROM urls WHERE short_url = $1", shortURL).Scan(&originalURL)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, "Short URL not found in the database")
+	}
 
-	originalUrl := "https://practicum.yandex.ru/"
-	
-	// w.Header().Set("Location", originalUrl)
-	// w.WriteHeader(http.StatusTemporaryRedirect)
-
-	return c.Redirect(http.StatusTemporaryRedirect, originalUrl)
+	// Перенаправление на оригинальный URL
+	return c.Redirect(http.StatusTemporaryRedirect, originalURL)
 }

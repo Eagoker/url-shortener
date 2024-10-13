@@ -7,15 +7,17 @@ import (
 	"github.com/Eagoker/url-shortener/internal/handlers"
 	"github.com/Eagoker/url-shortener/internal/config"
 	"github.com/Eagoker/url-shortener/internal/logger"
+	"github.com/Eagoker/url-shortener/internal/database"
 
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func main() {
 	// Чтение конфигурации
-	config := config.GetConfig()
+	cfg := config.GetConfig()
 
 	// Инициализация логгера
 	zapLogger, err := logger.InitLogger()
@@ -26,19 +28,23 @@ func main() {
 
 	// Настройка Echo
 	e := echo.New()
+	// БД
+	connStr := cfg.DatabaseDSN // Или используйте другую конфигурацию
+    database.ConnectDB(connStr)
 
 	// Подключение middleware для логгирования запросов
 	e.Use(logger.RequestLoggerMiddleware(zapLogger))
 	e.Use(middleware.Gzip())
 
 	// Маршруты
-	e.POST("/", handlers.ConvertToShort)
+	e.POST("/", func(c echo.Context) error {
+		return handlers.ConvertToShort(c, cfg.ServerAddress) // Передаем адрес сервера
+	})
 	e.GET("/:id", handlers.GetOriginalUrl)
-	e.POST("/api/shorten/", handlers.ApiShorten)
 
 	// Запуск сервера
-	zapLogger.Info("Starting server", zap.String("address", config.ServerAddress))
-	if err := e.Start(config.ServerAddress); err != http.ErrServerClosed {
+	zapLogger.Info("Starting server", zap.String("address", cfg.ServerAddress))
+	if err := e.Start(cfg.ServerAddress); err != http.ErrServerClosed {
 		zapLogger.Fatal("Server failed to start", zap.Error(err))
 	}
 }
