@@ -1,13 +1,12 @@
 package pkg
 
 import (
-    "crypto/rand"
-    "encoding/base64"
-    "fmt"
+	"crypto/rand"
+	"encoding/base64"
 )
 
-// generateShortURL принимает полный URL и возвращает короткий URL с рандомным концом.
-func GenerateShortURL(fullURL string) (string, error) {
+// GenerateShortURL принимает полный URL и возвращает короткий ID.
+func GenerateShortURL() (string, error) {
     // Генерируем случайную строку байт длиной 6 байт.
     randomBytes := make([]byte, 6)
     _, err := rand.Read(randomBytes)
@@ -18,7 +17,6 @@ func GenerateShortURL(fullURL string) (string, error) {
     // Кодируем байты в строку base64 и удаляем символы, не подходящие для URL.
     shortID := base64.RawURLEncoding.EncodeToString(randomBytes)
 
-    // Формируем короткий URL.
-    shortURL := fmt.Sprintf("http://localhost:8080/%s", shortID)
-    return shortURL, nil
+    // Возвращаем только короткий ID
+    return shortID, nil
 }

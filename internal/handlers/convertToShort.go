@@ -35,8 +35,9 @@ func ConvertToShort(c echo.Context, serverAddress string) error {
 	// Проверка, существует ли URL в базе данных
 	var existingShortURL string
 	err := db.QueryRow(c.Request().Context(), "SELECT short_url FROM urls WHERE original_url = $1", originalURL).Scan(&existingShortURL)
+
 	if err == nil {
-		// Если короткий URL уже существует в базе данных
+		// Если короткий URL уже существует в базе данных, возвращаем его
 		fullShortURL := serverAddressWithSlash(serverAddress) + existingShortURL // Формируем полный URL
 		response := Response{
 			ShortUrl: fullShortURL, // Возвращаем полный URL
@@ -50,22 +51,23 @@ func ConvertToShort(c echo.Context, serverAddress string) error {
 	}
 
 	// Генерируем короткий URL
-	fullShortURL, err := pkg.GenerateShortURL(originalURL)
+	shortURL, err := pkg.GenerateShortURL()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Error with generating short URL")
 	}
 
-	// Вычленяем короткую часть после "/"
-	shortURL := fullShortURL[strings.LastIndex(fullShortURL, "/")+1:]
-
 	// Сохраняем короткий URL в базу данных
-	_, err = db.Exec(c.Request().Context(), "INSERT INTO urls (original_url, short_url) VALUES ($1, $2)", originalURL, shortURL)
+	_, err = db.Exec(c.Request().Context(), `
+		INSERT INTO urls (original_url, short_url) 
+		VALUES ($1, $2) 
+		ON CONFLICT (original_url) DO NOTHING`, originalURL, shortURL)
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to save URL to the database")
 	}
 
 	// Формируем полный короткий URL для ответа
-	fullShortURL = serverAddressWithSlash(serverAddress) + shortURL
+	fullShortURL := serverAddressWithSlash(serverAddress) + shortURL
 
 	// Отправляем ответ с полным коротким URL
 	response := Response{

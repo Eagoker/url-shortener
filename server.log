@@ -12,3 +12,25 @@
 {"level":"info","timestamp":"2024-10-13T15:38:42.282-0400","msg":"HTTP request and response","method":"GET","uri":"/KI7Xkv3w","status":200,"latency":0.001860153,"response_size":0}
 {"level":"info","timestamp":"2024-10-13T15:38:50.214-0400","msg":"HTTP request and response","method":"GET","uri":"/KI7Xkv3w","status":200,"latency":0.001500677,"response_size":0}
 {"level":"info","timestamp":"2024-10-13T15:39:06.158-0400","msg":"HTTP request and response","method":"GET","uri":"/Kl7Xkv3w","status":307,"latency":0.00173463,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T15:55:23.942-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T15:55:27.052-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.01962398,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T15:55:30.554-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.00533498,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T15:55:33.640-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.05077944,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T15:56:01.214-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.005571214,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T16:00:38.673-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T16:00:41.016-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.017868509,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T16:00:49.755-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.006044747,"response_size":0}
+{"level":"info","timestamp":"2024-10-13T16:51:50.091-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T16:51:55.706-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.011400146,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T16:52:03.623-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.000669032,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T16:52:14.328-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.000658118,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T16:52:24.029-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.006581305,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T16:54:29.326-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.000670196,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T16:54:37.553-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.005716409,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T16:59:59.275-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T17:00:02.397-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.016448643,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T17:00:05.045-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.000833594,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T17:00:06.477-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":200,"latency":0.000684639,"response_size":59}
+{"level":"info","timestamp":"2024-10-13T17:15:59.641-0400","msg":"Starting server","address":"localhost:8080"}
+{"level":"info","timestamp":"2024-10-13T17:16:12.304-0400","msg":"HTTP request and response","method":"POST","uri":"/","status":201,"latency":0.01754577,"response_size":37}
+{"level":"info","timestamp":"2024-10-13T17:16:23.415-0400","msg":"HTTP request and response","method":"GET","uri":"/iSCd9sDb","status":307,"latency":0.001553639,"response_size":0}
