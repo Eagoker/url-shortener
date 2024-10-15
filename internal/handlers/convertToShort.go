@@ -1,36 +1,43 @@
 package handlers
 
 import (
-	"io"
+	"context"
 	"net/http"
 
 	"github.com/Eagoker/url-shortener/pkg"
-
 	"github.com/labstack/echo/v4"
-
 )
 
+type Request struct {
+	OriginalUrl string `json:"url"`
+}
 
-func ConvertToShort(c echo.Context) error {
-	if c.Request().Method != http.MethodPost {
-		return echo.NewHTTPError(http.StatusMethodNotAllowed, "Method not allowed!")
+type Response struct {
+	ShortUrl string `json:"result"`
+}
+
+func (h *Handler) ConvertToShort(c echo.Context) error {
+	requestBody := new(Request)
+
+	if err := c.Bind(requestBody); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid request body",
+		})
 	}
 
-	originalURLBytes, err := io.ReadAll(c.Request().Body)
-	if err != nil{
-		return echo.NewHTTPError(http.StatusInternalServerError, "Reading body error!")
-	}
-	
-	originalURL := string(originalURLBytes)
-
-	shortURL, err := pkg.GenerateShortURL(originalURL)
-	if err != nil{
-		return echo.NewHTTPError(http.StatusInternalServerError, "Error with genrate short URL")
+	shortURL, err := pkg.GenerateShortURL(requestBody.OriginalUrl)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error generating short URL")
 	}
 
-	byteShortURL := []byte(shortURL)
+	// Сохраняем URL в базу данных
+	_, err = h.db.Exec(context.Background(), `
+		INSERT INTO urls (short_url, original_url) VALUES ($1, $2)
+	`, shortURL, requestBody.OriginalUrl)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error saving URL")
+	}
 
-	c.Response().Header().Set("content-type", "text/plain")
-	return c.String(http.StatusCreated, string(byteShortURL))
-
+	fullURL := "http://" + h.serverAddress + "/" + shortURL
+	return c.JSON(http.StatusCreated, Response{ShortUrl: fullURL})
 }

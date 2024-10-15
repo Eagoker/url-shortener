@@ -1,31 +1,23 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
-	"strings"
 
 	"github.com/labstack/echo/v4"
-
 )
 
-func GetOriginalUrl(c echo.Context) error{
-	if c.Request().Method != http.MethodGet{
-		return echo.NewHTTPError(http.StatusMethodNotAllowed, "Method not allowed!")
+func (h *Handler) GetOriginalUrl(c echo.Context) error {
+	id := c.Param("id")
+
+	// Ищем оригинальный URL в базе данных
+	var originalUrl string
+	err := h.db.QueryRow(context.Background(), `
+		SELECT original_url FROM urls WHERE short_url = $1
+	`, id).Scan(&originalUrl)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, "URL not found")
 	}
-	
-	path := c.Request().URL.Path
-
-	// Убираем первый слеш и берем первую часть до следующего слеша
-	trimmedPath := strings.TrimPrefix(path, "/")
-	id := strings.Split(trimmedPath, "/")[0]
-
-	//тут будет логика получения ориг юрла
-	_ = id
-
-	originalUrl := "https://practicum.yandex.ru/"
-	
-	// w.Header().Set("Location", originalUrl)
-	// w.WriteHeader(http.StatusTemporaryRedirect)
 
 	return c.Redirect(http.StatusTemporaryRedirect, originalUrl)
 }
