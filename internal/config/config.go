@@ -9,7 +9,10 @@ import (
 
 type Config struct {
 	ServerAddress string `env:"SERVER_ADDRESS"`
-	DatabaseDSN   string `env:"DATABASE_DSN"`
+
+	DatabaseURL   string `env:"DATABASE_URL"`
+	SecretKey     string `env:"SECRET_KEY"` 
+
 }
 
 var (
@@ -24,30 +27,28 @@ func GetConfig() *Config {
 
 		// Парсим флаги
 		serverAddress := flag.String("address", "localhost:8080", "Web-server address")
-		databaseDSN := flag.String("db", "", "DB address")
+
+		databaseURL := flag.String("db", "", "Database URL")
+		secretKey := flag.String("secret", "", "JWT Secret Key") // Новый флаг для секретного ключа
 
 		flag.Parse()
 
 		// Разбираем переменные окружения
 		err := env.Parse(config)
-		if err != nil {
-			panic("Failed to parse environment variables: " + err.Error())
-		}
 
-		// Устанавливаем значения из флагов, если они не заданы через окружение
-		if config.ServerAddress == "" {
+		if err != nil || config.ServerAddress == "" {
+			// Если переменные окружения не заданы или ошибка парсинга, используем флаги
 			config.ServerAddress = *serverAddress
 		}
-		if config.DatabaseDSN == "" {
-			config.DatabaseDSN = *databaseDSN
+
+		if config.DatabaseURL == "" {
+			// Если переменная окружения DATABASE_URL не задана, используем флаг
+			config.DatabaseURL = *databaseURL
 		}
 
-		// Проверяем, что обязательные параметры заданы
-		if config.ServerAddress == "" {
-			panic("Server address is not defined! Please provide it via flag or environment variable.")
-		}
-		if config.DatabaseDSN == "" {
-			panic("Database DSN is not defined! Please provide it via flag or environment variable.")
+		if config.SecretKey == "" {
+			// Если переменная окружения SECRET_KEY не задана, используем флаг
+			config.SecretKey = *secretKey
 		}
 	})
 

@@ -1,22 +1,24 @@
 package pkg
 
 import (
-	"crypto/rand"
-	"encoding/base64"
+
+    "crypto/rand"
+    "encoding/base64"
 )
 
-// GenerateShortURL принимает полный URL и возвращает короткий ID.
-func GenerateShortURL() (string, error) {
+// GenerateShortURL принимает полный URL и возвращает короткий URL с рандомным концом.
+func GenerateShortURL(fullURL string) (string, error) {
+
     // Генерируем случайную строку байт длиной 6 байт.
     randomBytes := make([]byte, 6)
-    _, err := rand.Read(randomBytes)
-    if err != nil {
+    if _, err := rand.Read(randomBytes); err != nil {
         return "", err
     }
 
     // Кодируем байты в строку base64 и удаляем символы, не подходящие для URL.
-    shortID := base64.RawURLEncoding.EncodeToString(randomBytes)
+    shortURL := base64.RawURLEncoding.EncodeToString(randomBytes)
 
-    // Возвращаем только короткий ID
-    return shortID, nil
+
+    return shortURL, nil
+
 }
