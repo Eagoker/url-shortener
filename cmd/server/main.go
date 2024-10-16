@@ -77,7 +77,9 @@ func main() {
 
 	e.POST("/register", h.Register)
 	e.POST("/login", h.Login)
+	// Ваша функция main остаётся прежней
 	e.POST("/", h.ConvertToShort, middleware.JwtMiddleware(cfg))
+	e.GET("/", h.GetUserUrls, middleware.JwtMiddleware(cfg))
 	e.GET("/:id", h.GetOriginalUrl, middleware.JwtMiddleware(cfg))
 
 	// Запуск сервера

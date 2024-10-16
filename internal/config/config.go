@@ -9,8 +9,7 @@ import (
 
 type Config struct {
 	ServerAddress string `env:"SERVER_ADDRESS"`
-
-	DatabaseURL   string `env:"DATABASE_URL"`
+	DatabaseURL   string `env:"DATABASE_ADDRESS"`
 	SecretKey     string `env:"SECRET_KEY"` 
 
 }
@@ -27,8 +26,7 @@ func GetConfig() *Config {
 
 		// Парсим флаги
 		serverAddress := flag.String("address", "localhost:8080", "Web-server address")
-
-		databaseURL := flag.String("db", "", "Database URL")
+		databaseAddress := flag.String("db", "", "Database address")
 		secretKey := flag.String("secret", "", "JWT Secret Key") // Новый флаг для секретного ключа
 
 		flag.Parse()
@@ -43,7 +41,7 @@ func GetConfig() *Config {
 
 		if config.DatabaseURL == "" {
 			// Если переменная окружения DATABASE_URL не задана, используем флаг
-			config.DatabaseURL = *databaseURL
+			config.DatabaseURL = *databaseAddress
 		}
 
 		if config.SecretKey == "" {
